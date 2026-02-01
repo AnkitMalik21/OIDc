@@ -2,6 +2,7 @@ package com.res.server.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -16,8 +17,11 @@ public class SecurityConfig {
         http.cors(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable);
 
-        http.authorizeHttpRequests(request ->request.anyRequest().permitAll());
-        http.oauth2Login(AbstractHttpConfigurer::disable);
+        http.authorizeHttpRequests(request ->
+                request.requestMatchers("/api/v1/**").authenticated()
+                        .anyRequest().permitAll());
+
+        http.oauth2ResourceServer(authServer ->authServer.jwt(Customizer.withDefaults()));
         return http.build();
     }
 }

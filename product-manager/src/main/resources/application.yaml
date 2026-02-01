@@ -5,4 +5,12 @@ spring:
   application:
     name: product-manager
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/auth-server
+          jwt-set-uri: http://localhost:8080/realms/auth-server/protocol/openid-connect/certs
+
+
 
